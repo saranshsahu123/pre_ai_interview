@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -250px;
+            right: -250px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(20px); }
+        }
+
+        .result-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-card h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header-card .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .profile-section {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out 0.1s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .profile-details h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .profile-details p {
+            color: #666;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 14px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-box .label {
+            color: #888;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-box .value {
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .score-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            text-align: center;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        .rank-display {
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .rank-label {
+            color: #666;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .skills-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out 0.3s both;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .companies-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .company-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196f3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .company-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+
+        .match-score {
+            background: #2196f3;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .interview-cta {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 45px;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out 0.5s both;
+            border: 3px solid #667eea;
+        }
+
+        .interview-cta h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .interview-cta p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .btn-interview {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-interview::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-interview:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-interview:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-interview span {
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .interview-cta {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="result-container">
+    <div class="header-card">
+        <h1>📊 Resume Analysis Complete</h1>
+        <p class="subtitle">Your comprehensive profile assessment and recommendations</p>
+    </div>
+
+    <div class="profile-section">
+        <div class="profile-header">
+            <div class="profile-img">
+                {{ data.name|slice:":1"|upper }}
+            </div>
+            <div class="profile-details">
+                <h2>{{ data.name }}</h2>
+                <p>💼 {{ data.job_role }}</p>
+                {% if data.email %}<p>📧 {{ data.email }}</p>{% endif %}
+                {% if data.phone %}<p>📱 {{ data.phone }}</p>{% endif %}
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-box">
+                <div class="label">Education</div>
+                <div class="value">{{ data.degree|default:"Not specified" }}</div>
+            </div>
+            <div class="info-box">
+                <div class="label">Projects</div>
+                <div class="value">{% if data.has_project %}Yes{% else %}None found{% endif %}</div>
+            </div>
+            <div class="info-box">
+                <div class="label">Experience</div>
+                <div class="value">{% if data.has_experience %}Yes{% else %}No experience listed{% endif %}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="score-card">
+        <div class="rank-display">{{ data.rank_score }}/10</div>
+        <div class="rank-label">Overall Candidate Score</div>
+    </div>
+
+    {% if data.skills %}
+    <div class="skills-card">
+        <h3 class="section-title">🎯 Detected Skills</h3>
+        <div class="skill-tags">
+            {% for skill in data.skills %}
+            <span class="skill-tag">{{ skill|upper }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if data.companies %}
+    <div class="companies-card">
+        <h3 class="section-title">🏢 Recommended Companies</h3>
+        {% for company in data.companies %}
+        <div class="company-item">
+            <div>
+                <div class="company-name">{{ company.company }}</div>
+                <div style="color: #666; font-size: 13px; margin-top: 5px;">
+                    Matched: {{ company.matched_skills|join:", " }}
+                </div>
+            </div>
+            <div class="match-score">{{ company.match_score }} skills</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="interview-cta">
+        <h2>🎯 Ready to Practice Your Interview?</h2>
+        <p>
+            Take our AI-powered interview assessment with 20 personalized questions based on your skills, 
+            job role, and projects. Get detailed feedback and actionable suggestions to improve your interview performance!
+        </p>
+        <a href="{% url 'start_interview' %}" class="btn-interview">
+            <span>🚀 Start AI Interview Now</span>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
