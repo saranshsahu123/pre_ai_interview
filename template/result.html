@@ -1,462 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Analysis Results</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume Analysis Result</title>
+  <style>
+    :root{
+      --bg:#f4f6fb;
+      --card:#ffffff;
+      --accent:#6b5bff;
+      --muted:#666;
+      --success:#28a745;
+    }
+    body{
+      margin:0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+    }
+    .wrap{
+      max-width:1000px;
+      margin:20px auto;
+    }
+    .header{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      margin-bottom:18px;
+    }
+    .profile {
+      width:110px;
+      height:110px;
+      border-radius:12px;
+      overflow:hidden;
+      background:#f0f0f0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 30px rgba(45,50,80,0.08);
+      flex-shrink:0;
+    }
+    .profile img{ width:100%; height:100%; object-fit:cover; }
+    .hdr-meta{
+      flex:1;
+    }
+    .name{ font-size:22px; font-weight:700; color:#111; }
+    .role{ margin-top:4px; color:var(--muted); font-weight:600; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
+    .card{
+      background:var(--card);
+      border-radius:14px;
+      padding:20px;
+      box-shadow:0 8px 30px rgba(34,41,80,0.06);
+      margin-bottom:18px;
+    }
 
-        body::before {
-            content: '';
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -250px;
-            right: -250px;
-            animation: float 6s ease-in-out infinite;
-        }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:18px;
+    }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(20px); }
-        }
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:700;
+      color:#333;
+      margin-bottom:12px;
+    }
 
-        .result-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            position: relative;
-            z-index: 10;
-        }
+    .basic-list p{ margin:6px 0; color:var(--muted); }
+    .skills-list, .projects-list, .companies-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      background:#f5f7ff;
+      color:#253bff;
+      padding:8px 10px;
+      border-radius:999px;
+      font-weight:600;
+      font-size:13px;
+      box-shadow:0 2px 8px rgba(99,102,241,0.06);
+    }
 
-        .header-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 40px;
-            border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            margin-bottom: 30px;
-            animation: slideDown 0.8s ease-out;
-        }
+    .right-col {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .score {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .score-circle{
+      width:86px;
+      height:86px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,var(--accent),#9c84ff);
+      color:#fff;
+      font-weight:800;
+      font-size:22px;
+      box-shadow:0 12px 36px rgba(107,91,255,0.2);
+    }
 
-        .header-card h1 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+    .score-meta{ flex:1; padding-left:6px; }
+    .score-meta p{ margin:4px 0; color:var(--muted); }
 
-        .header-card .subtitle {
-            color: #666;
-            font-size: 16px;
-        }
+    .btns{ display:flex; gap:12px; margin-top:10px; justify-content:center; }
+    .btn{
+      background:var(--accent);
+      color:#fff;
+      border:none;
+      padding:12px 18px;
+      border-radius:10px;
+      cursor:pointer;
+      text-decoration:none;
+      font-weight:700;
+      box-shadow:0 10px 30px rgba(107,91,255,0.12);
+    }
+    .btn.secondary{
+      background:#fff;
+      color:var(--accent);
+      border:2px solid #eef0ff;
+      box-shadow:0 6px 20px rgba(16,24,40,0.04);
+    }
 
-        .profile-section {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            margin-bottom: 30px;
-            animation: slideUp 0.8s ease-out 0.1s both;
-        }
+    .companies-list .company{
+      width:100%;
+      background:#fbfdff;
+      border-radius:10px;
+      padding:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border:1px solid #f0f4ff;
+    }
+    .hint{ color:var(--muted); font-size:13px; }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    footer{ text-align:center; margin-top:22px; color:var(--muted); font-size:13px; }
 
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 40px;
-            font-weight: 700;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-        }
-
-        .profile-details h2 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .profile-details p {
-            color: #666;
-            font-size: 16px;
-            margin: 5px 0;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .info-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 20px;
-            border-radius: 14px;
-            border-left: 4px solid #667eea;
-        }
-
-        .info-box .label {
-            color: #888;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .info-box .value {
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .score-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            margin-bottom: 30px;
-            text-align: center;
-            animation: slideUp 0.8s ease-out 0.2s both;
-        }
-
-        .rank-display {
-            font-size: 72px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-        }
-
-        .rank-label {
-            color: #666;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .skills-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            margin-bottom: 30px;
-            animation: slideUp 0.8s ease-out 0.3s both;
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 25px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .skill-tag {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-        }
-
-        .companies-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 35px;
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            margin-bottom: 30px;
-            animation: slideUp 0.8s ease-out 0.4s both;
-        }
-
-        .company-item {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            padding: 20px;
-            border-radius: 14px;
-            margin-bottom: 15px;
-            border-left: 4px solid #2196f3;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-
-        .company-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
-        }
-
-        .company-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0d47a1;
-        }
-
-        .match-score {
-            background: #2196f3;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .interview-cta {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 45px;
-            border-radius: 24px;
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
-            text-align: center;
-            margin-bottom: 30px;
-            animation: slideUp 0.8s ease-out 0.5s both;
-            border: 3px solid #667eea;
-        }
-
-        .interview-cta h2 {
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .interview-cta p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .btn-interview {
-            display: inline-block;
-            padding: 20px 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-            letter-spacing: 0.3px;
-        }
-
-        .btn-interview::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.25);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn-interview:hover::before {
-            width: 400px;
-            height: 400px;
-        }
-
-        .btn-interview:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
-        }
-
-        .btn-interview span {
-            position: relative;
-            z-index: 1;
-        }
-
-        @media (max-width: 768px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .company-item {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .interview-cta {
-                padding: 30px 20px;
-            }
-        }
-    </style>
+    /* responsive */
+    @media (max-width:900px){
+      .grid{ grid-template-columns: 1fr; }
+      .right-col{ order:2; }
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
 
-<div class="result-container">
-    <div class="header-card">
-        <h1>📊 Resume Analysis Complete</h1>
-        <p class="subtitle">Your comprehensive profile assessment and recommendations</p>
+    <div class="header">
+      <div class="profile">
+        {% if data.profile_img %}
+          <img src="{{ data.profile_img }}" alt="profile" />
+        {% else %}
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style="opacity:.55">
+            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM4 20v-1c0-2.76 5.33-4 8-4s8 1.24 8 4v1H4z" fill="#bfc8ff"/>
+          </svg>
+        {% endif %}
+      </div>
+
+      <div class="hdr-meta">
+        <div class="name">{{ data.name }}</div>
+        <div class="role">{{ data.job_role|title }}</div>
+        <div style="margin-top:8px;" class="hint">
+          <strong>Email:</strong> {{ data.email }} &nbsp; • &nbsp; <strong>Phone:</strong> {{ data.phone }}
+        </div>
+      </div>
+
+      <div style="margin-left:auto; text-align:right;">
+        <div style="font-size:12px; color:var(--muted)">Resume Score</div>
+        <div style="margin-top:8px;">
+          <div style="display:inline-block; padding:10px 14px; background:#fff; border-radius:12px; box-shadow:0 10px 26px rgba(16,24,40,0.04); font-weight:800; font-size:20px; color:var(--accent)">
+            {{ data.rank_score }} / 10
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="profile-section">
-        <div class="profile-header">
-            <div class="profile-img">
-                {{ data.name|slice:":1"|upper }}
-            </div>
-            <div class="profile-details">
-                <h2>{{ data.name }}</h2>
-                <p>💼 {{ data.job_role }}</p>
-                {% if data.email %}<p>📧 {{ data.email }}</p>{% endif %}
-                {% if data.phone %}<p>📱 {{ data.phone }}</p>{% endif %}
-            </div>
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <div>
+        <div class="card">
+          <div class="section-title">Skills</div>
+          <div class="skills-list">
+            {% if data.skills %}
+              {% for s in data.skills %}
+                <div class="chip">{{ s|upper }}</div>
+              {% endfor %}
+            {% else %}
+              <div class="hint">No skills detected from the resume.</div>
+            {% endif %}
+          </div>
         </div>
 
-        <div class="info-grid">
-            <div class="info-box">
-                <div class="label">Education</div>
-                <div class="value">{{ data.degree|default:"Not specified" }}</div>
-            </div>
-            <div class="info-box">
-                <div class="label">Projects</div>
-                <div class="value">{% if data.has_project %}Yes{% else %}None found{% endif %}</div>
-            </div>
-            <div class="info-box">
-                <div class="label">Experience</div>
-                <div class="value">{% if data.has_experience %}Yes{% else %}No experience listed{% endif %}</div>
-            </div>
+        <div class="card" style="margin-top:14px;">
+          <div class="section-title">Project Titles</div>
+          <div class="projects-list">
+            {% if data.project_titles %}
+              <ul style="padding-left:18px; color:var(--muted)">
+                {% for p in data.project_titles %}
+                  <li style="margin-bottom:8px;">{{ p }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <div class="hint">No project titles found. Make sure your resume has a 'Project' section.</div>
+            {% endif %}
+          </div>
         </div>
-    </div>
 
-    <div class="score-card">
-        <div class="rank-display">{{ data.rank_score }}/10</div>
-        <div class="rank-label">Overall Candidate Score</div>
-    </div>
-
-    {% if data.skills %}
-    <div class="skills-card">
-        <h3 class="section-title">🎯 Detected Skills</h3>
-        <div class="skill-tags">
-            {% for skill in data.skills %}
-            <span class="skill-tag">{{ skill|upper }}</span>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
-    {% if data.companies %}
-    <div class="companies-card">
-        <h3 class="section-title">🏢 Recommended Companies</h3>
-        {% for company in data.companies %}
-        <div class="company-item">
-            <div>
-                <div class="company-name">{{ company.company }}</div>
-                <div style="color: #666; font-size: 13px; margin-top: 5px;">
-                    Matched: {{ company.matched_skills|join:", " }}
+        <div class="card" style="margin-top:14px;">
+          <div class="section-title">Suggested Companies</div>
+          <div class="companies-list" style="display:flex;flex-direction:column;gap:10px;">
+            {% if data.companies %}
+              {% for c in data.companies %}
+                <div class="company">
+                  <div>
+                    <div style="font-weight:700">{{ c.company }}</div>
+                    <div class="hint" style="font-size:13px;">Matched skills: {{ c.matched_skills|join:", " }}</div>
+                  </div>
+                  <div style="font-weight:800;color:var(--accent)">{{ c.match_score }}</div>
                 </div>
-            </div>
-            <div class="match-score">{{ company.match_score }} skills</div>
+              {% endfor %}
+            {% else %}
+              <div class="hint">No company suggestions available for the detected skills.</div>
+            {% endif %}
+          </div>
         </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+      </div>
 
-    <div class="interview-cta">
-        <h2>🎯 Ready to Practice Your Interview?</h2>
-        <p>
-            Take our AI-powered interview assessment with 20 personalized questions based on your skills, 
-            job role, and projects. Get detailed feedback and actionable suggestions to improve your interview performance!
-        </p>
-        <a href="{% url 'start_interview' %}" class="btn-interview">
-            <span>🚀 Start AI Interview Now</span>
-        </a>
-    </div>
-</div>
+      <!-- RIGHT COLUMN -->
+      <div class="right-col">
+        <div class="card score">
+          <div class="score-circle">{{ data.rank_score|floatformat:0 }}</div>
+          <div class="score-meta">
+            <div style="font-weight:800; font-size:16px;">Overall Resume Score</div>
+            <p class="hint">This score is calculated from degree, skills match, projects and experience.</p>
+            <div style="margin-top:8px;">
+              <span style="display:inline-block; background:#f6fff5; color:var(--success); padding:8px 12px; border-radius:8px; font-weight:700;">
+                {% if data.has_project %} Project ✓ {% else %} No Project {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
 
+        <div class="card">
+          <div class="section-title">Quick Actions</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start;">
+            <!-- Start Interview: uses session resume_data so simple link is fine -->
+            <a href="{% url 'start_interview' %}" class="btn" title="Start AI Interview Practice">Start AI Interview</a>
+
+            <!-- Upload New Resume -->
+            <a href="{% url 'upload_resume' %}" class="btn secondary" title="Upload a new resume">Upload New Resume</a>
+
+            <!-- Print result -->
+            <button onclick="window.print()" class="btn secondary" style="border-radius:10px;">Print Result</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Contact & Education</div>
+          <div class="basic-list">
+            <p><strong>Email:</strong> {{ data.email }}</p>
+            <p><strong>Phone:</strong> {{ data.phone }}</p>
+            <p><strong>Degree:</strong> {{ data.degree|default:"Not found" }}</p>
+            <p><strong>Experience section found:</strong> {{ data.has_experience|yesno:"Yes,No" }}</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Share / Social</div>
+          <div class="hint">Quick links (if any were detected in resume will be shown)</div>
+          <div style="margin-top:10px;">
+            {% if data.social_links %}
+              {% for platform, link in data.social_links.items %}
+                <a href="{{ link }}" target="_blank" class="chip" style="background:#fff;color:#333;border:1px solid #f0f2ff;">{{ platform }}</a>
+              {% endfor %}
+            {% else %}
+              <div class="hint">No social links parsed from resume.</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Need better recommendations? Improve your projects and skill keywords in the resume and re-upload.</p>
+    </footer>
+  </div>
 </body>
 </html>
