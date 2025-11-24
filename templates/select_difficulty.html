@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Select Difficulty - AI Interview</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+      padding:24px;
+    }
+    .wrap{
+      max-width:800px;
+      margin:40px auto;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 12px 40px rgba(15,23,42,0.12);
+      padding:24px 26px 28px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:22px;
+      font-weight:800;
+      color:#111827;
+    }
+    p.sub{
+      margin:0 0 18px;
+      color:#6b7280;
+      font-size:14px;
+    }
+    .candidate{
+      margin-bottom:18px;
+      font-size:14px;
+      color:#4b5563;
+    }
+    .levels{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:16px;
+      margin-top:12px;
+    }
+    .card{
+      border-radius:14px;
+      border:1px solid #e5e7eb;
+      padding:16px;
+      background:#f9fafb;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .title{
+      font-weight:700;
+      font-size:15px;
+      color:#111827;
+    }
+    .desc{
+      font-size:13px;
+      color:#6b7280;
+    }
+    button{
+      margin-top:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      background:#4f46e5;
+      color:white;
+      font-weight:700;
+      font-size:13px;
+      box-shadow:0 8px 20px rgba(79,70,229,0.25);
+    }
+    .back{
+      display:inline-block;
+      margin-top:20px;
+      font-size:13px;
+      color:#6b7280;
+      text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Choose Interview Difficulty</h1>
+  <p class="sub">We will ask 10 questions based on the level you choose and evaluate your answers automatically.</p>
+
+  <div class="candidate">
+    <strong>Candidate:</strong> {{ data.name }} &nbsp;&nbsp;
+    <strong>Role:</strong> {{ data.job_role|title }}
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="levels">
+
+      <div class="card">
+        <div class="title">Easy</div>
+        <div class="desc">Basic HR + simple technical questions. Good for warming up and building confidence.</div>
+        <button type="submit" name="difficulty" value="easy">Start Easy Round</button>
+      </div>
+
+      <div class="card">
+        <div class="title">Medium</div>
+        <div class="desc">Mix of HR, coding concepts and CS fundamentals. Suitable for general placements.</div>
+        <button type="submit" name="difficulty" value="medium">Start Medium Round</button>
+      </div>
+
+      <div class="card">
+        <div class="title">Hard</div>
+        <div class="desc">In-depth CS, system concepts and problem-solving style questions.</div>
+        <button type="submit" name="difficulty" value="hard">Start Hard Round</button>
+      </div>
+
+    </div>
+  </form>
+
+  <a href="{% url 'upload_resume' %}" class="back">← Back to Resume Result</a>
+</div>
+</body>
+</html>

@@ -1,249 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interview Feedback & Score</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6a5af9, #8360c3);
-            padding: 30px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
-            margin-bottom: 30px;
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 34px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #5c44f5, #6930c3);
-            -webkit-text-fill-color: transparent;
-            -webkit-background-clip: text;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .badge {
-            text-align: center;
-            padding: 12px 25px;
-            background: #eef1ff;
-            border: 2px solid #5c44f5;
-            display: inline-block;
-            margin: auto;
-            border-radius: 30px;
-            font-weight: 600;
-            color: #4a32da;
-        }
-
-        .score-box {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .score-circle {
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-            margin: auto;
-            background: linear-gradient(135deg, #5c44f5, #6930c3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 50px;
-            color: #fff;
-            box-shadow: 0 20px 50px rgba(87, 66, 245, 0.50);
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .feedback-text {
-            margin-top: 18px;
-            font-size: 18px;
-            text-align: center;
-            color: #555;
-        }
-
-        .section-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title span {
-            font-size: 28px;
-        }
-
-        .list-item {
-            background: #f5f5ff;
-            border-left: 4px solid #5c44f5;
-            padding: 14px 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            font-size: 15px;
-            color: #444;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-        }
-
-        .improve-item {
-            background: #fff2cc;
-            border-left: 5px solid #f4c22b;
-        }
-
-        .skill-item {
-            background: #e1f5ff;
-            border-left: 5px solid #2196f3;
-        }
-
-        .alt-role {
-            background: #e6ffe6;
-            border-left: 5px solid #43a047;
-        }
-
-        .actions {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 14px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            margin: 10px;
-            display: inline-block;
-            transition: 0.3s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #5c44f5, #6930c3);
-            color: #fff;
-            box-shadow: 0 10px 25px rgba(87, 66, 245, 0.40);
-        }
-
-        .btn-primary:hover { transform: translateY(-3px); }
-
-        .btn-secondary {
-            background: #fff;
-            border: 2px solid #5c44f5;
-            color: #5c44f5;
-        }
-
-        .btn-secondary:hover {
-            background: #f5f1ff;
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <title>Interview Feedback</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+      padding:24px;
+    }
+    .wrap{
+      max-width:800px;
+      margin:40px auto;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:0 14px 45px rgba(15,23,42,0.18);
+      padding:26px 26px 30px;
+      text-align:center;
+    }
+    h1{
+      margin:0 0 6px;
+      font-size:22px;
+      font-weight:800;
+      color:#111827;
+    }
+    p.sub{
+      margin:0 0 14px;
+      font-size:13px;
+      color:#6b7280;
+    }
+    .score-circle{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      margin:20px auto 10px;
+      background:conic-gradient(#4ade80 calc(var(--percent)*1%),#e5e7eb 0);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .score-circle-inner{
+      width:88px;
+      height:88px;
+      border-radius:50%;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      box-shadow:0 6px 18px rgba(15,23,42,0.08);
+    }
+    .score-main{
+      font-size:28px;
+      font-weight:800;
+      color:#111827;
+    }
+    .score-sub{
+      font-size:11px;
+      color:#6b7280;
+    }
+    .readiness{
+      margin-top:14px;
+      font-size:14px;
+      font-weight:600;
+      color:#111827;
+    }
+    .meta{
+      margin-top:8px;
+      font-size:13px;
+      color:#6b7280;
+    }
+    .btns{
+      margin-top:20px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      padding:10px 16px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      text-decoration:none;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:#4f46e5;
+      color:#fff;
+      box-shadow:0 10px 30px rgba(79,70,229,0.3);
+    }
+    .btn.secondary{
+      background:#fff;
+      color:#4b5563;
+      border:1px solid #e5e7eb;
+    }
+  </style>
 </head>
 <body>
+<div class="wrap" style="--percent: {{ evaluation.score|floatformat:0 }};">
+  <h1>Interview Practice Summary</h1>
+  <p class="sub">
+    {{ data.name }} &nbsp; • &nbsp; Difficulty: {{ difficulty|title }}
+  </p>
 
-<div class="container">
-
-    <!-- Header -->
-    <div class="card">
-        <h1>🎓 Interview Results</h1>
-        <p class="subtitle">AI-powered detailed performance analysis</p>
-
-        <div class="badge">
-            👤 {{ data.name }} &nbsp; | &nbsp; 💼 {{ data.job_role }}
-        </div>
+  <div class="score-circle">
+    <div class="score-circle-inner">
+      <div class="score-main">{{ evaluation.score }}</div>
+      <div class="score-sub">out of {{ evaluation.out_of }}</div>
     </div>
-
-    <!-- Score -->
-    <div class="card">
-        <div class="score-box">
-            <div class="score-circle">
-                {{ evaluation.score }}
-            </div>
-            <div class="feedback-text">
-                {% if evaluation.score >= 8 %} Excellent communication!  
-                {% elif evaluation.score >= 5 %} Good effort! Improve depth and structure.  
-                {% else %} Needs significant improvement — practice your concepts.  
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Strengths -->
-    <div class="card">
-        <div class="section-title"><span>✨</span> Your Strengths</div>
-        {% for s in evaluation.strengths %}
-        <div class="list-item">{{ s }}</div>
-        {% endfor %}
-    </div>
-
-    <!-- Improvements -->
-    <div class="card">
-        <div class="section-title"><span>⚠️</span> Areas For Improvement</div>
-        {% for imp in evaluation.improvements %}
-        <div class="list-item improve-item">{{ imp }}</div>
-        {% endfor %}
-    </div>
-
-    <!-- Recommended Skills -->
-    <div class="card">
-        <div class="section-title"><span>💡</span> Recommended Skills to Learn</div>
-
-        {% for skill in evaluation.recommended_skills %}
-        <div class="list-item skill-item">
-            {{ skill|capfirst }} — adding this skill will increase your job chances.
-        </div>
-        {% endfor %}
-    </div>
-
-    <!-- Alternate Roles -->
-    <div class="card">
-        <div class="section-title"><span>🧭</span> Other Roles You Can Apply For</div>
-
-        {% if evaluation.alternate_roles %}
-            {% for role in evaluation.alternate_roles %}
-                <div class="list-item alt-role">{{ role }}</div>
-            {% endfor %}
-        {% else %}
-        <div class="list-item">You are well aligned with your current job role.</div>
-        {% endif %}
-    </div>
-
-    <!-- Actions -->
-    <div class="actions">
-        <a href="{% url 'start_interview' %}" class="btn btn-primary">🔄 Retake Interview</a>
-        <a href="{% url 'upload_resume' %}" class="btn btn-secondary">📄 Upload New Resume</a>
-        <button onclick="window.print()" class="btn btn-secondary">🖨 Print</button>
-    </div>
-
+  </div>
+  <div class="meta">
+  Average English score: {{ evaluation.avg_english }}/10 &nbsp; • &nbsp;
+  Average communication score: {{ evaluation.avg_communication }}/10
 </div>
 
+
+  <div class="readiness">{{ evaluation.readiness }}</div>
+  <div class="meta">
+    Keep practicing regularly and try changing the difficulty level or your answers style.
+  </div>
+
+  <div class="btns">
+    <a class="btn primary" href="{% url 'start_interview' %}">Try Another Round</a>
+    <a class="btn secondary" href="{% url 'upload_resume' %}">Back to Resume Analysis</a>
+  </div>
+</div>
 </body>
 </html>

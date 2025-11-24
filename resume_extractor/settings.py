@@ -4,6 +4,11 @@ Django settings for resume_extractor project.
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv()  # Load .env file
+
 
 # Base Directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,6 +22,9 @@ if not os.path.exists(TEMP_UPLOAD_DIR):
 SECRET_KEY = 'django-insecure-skp#=3_myojphsm%)k9307_xk%ss*s#tlhm0_q&kci5l)1%w&9'
 DEBUG = True
 ALLOWED_HOSTS = []
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
 
 
 INSTALLED_APPS = [

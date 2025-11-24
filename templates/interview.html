@@ -1,168 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Interview Session</title>
+  <meta charset="UTF-8" />
+  <title>AI Interview - Question {{ index }}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
+      padding:24px;
+    }
+    .wrap{
+      max-width:900px;
+      margin:30px auto;
+      background:#fff;
+      border-radius:16px;
+      box-shadow:0 14px 45px rgba(15,23,42,0.16);
+      padding:24px 26px 30px;
+    }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      margin-bottom:18px;
+    }
+    .top-left h1{
+      margin:0 0 4px;
+      font-size:20px;
+      font-weight:800;
+      color:#111827;
+    }
+    .top-left p{
+      margin:0;
+      font-size:13px;
+      color:#6b7280;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      background:#eef2ff;
+      color:#4f46e5;
+    }
+    .score-box{
+      text-align:right;
+      font-size:13px;
+      color:#4b5563;
+    }
+    .score-box span{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f9fafb;
+      font-weight:700;
+      color:#111827;
+    }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: "Inter", sans-serif;
-            background: linear-gradient(135deg, #6A5FFD, #8F79FF);
-            min-height: 100vh;
-            padding: 30px;
-            color: #fff;
-        }
+    .question-card{
+      border-radius:14px;
+      border:1px solid #e5e7eb;
+      padding:18px;
+      background:#f9fafb;
+      margin-bottom:16px;
+    }
+    .q-label{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:#9ca3af;
+      margin-bottom:6px;
+    }
+    .q-text{
+      font-size:16px;
+      font-weight:600;
+      color:#111827;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 35px;
-            border-radius: 18px;
-            color: #333;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-            animation: fadeIn 0.7s ease-in-out;
-        }
+    .controls{
+      margin-top:12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .btn-small{
+      padding:8px 12px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:#eef2ff;
+      color:#4f46e5;
+    }
 
-        @keyframes fadeIn {
-            from {opacity: 0; transform: translateY(10px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
+    textarea{
+      width:100%;
+      min-height:120px;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      resize:vertical;
+      font-family:inherit;
+      font-size:14px;
+    }
 
-        h1 {
-            text-align: center;
-            font-size: 30px;
-            margin-bottom: 6px;
-            background: linear-gradient(135deg, #6A5FFD, #8F79FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-        }
+    .actions{
+      margin-top:14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .btn-main{
+      padding:11px 16px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:700;
+      background:#4f46e5;
+      color:#fff;
+      box-shadow:0 10px 30px rgba(79,70,229,0.32);
+    }
+    .btn-outline{
+      padding:11px 16px;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:700;
+      background:#fff;
+      color:#4b5563;
+    }
 
-        .subtitle {
-            text-align: center;
-            color: #555;
-            margin-bottom: 30px;
-        }
+    .feedback{
+      margin-top:16px;
+      padding:14px 14px 12px;
+      border-radius:12px;
+      font-size:13px;
+    }
+    .feedback.correct{
+      background:#ecfdf3;
+      color:#166534;
+      border:1px solid #bbf7d0;
+    }
+    .feedback.wrong{
+      background:#fef2f2;
+      color:#991b1b;
+      border:1px solid #fecaca;
+    }
+    .feedback .label{
+      font-weight:700;
+      margin-bottom:4px;
+    }
 
-        .question-box {
-            background: #f3f3ff;
-            padding: 20px;
-            border-left: 6px solid #6A5FFD;
-            border-radius: 12px;
-            font-size: 18px;
-            margin-bottom: 25px;
-            color: #333;
-            line-height: 1.6;
-            font-weight: 600;
-        }
-
-        textarea {
-            width: 100%;
-            height: 150px;
-            border-radius: 14px;
-            border: 2px solid #dfe1ff;
-            padding: 15px;
-            font-size: 15px;
-            outline: none;
-            resize: none;
-        }
-
-        textarea:focus {
-            border-color: #6A5FFD;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: center;
-            margin: 18px 0;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 14px 24px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .primary {
-            background: linear-gradient(135deg, #6A5FFD, #8F79FF);
-            color: #fff;
-        }
-
-        .primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(106,95,253,0.3);
-        }
-
-        .outline {
-            background: #fff;
-            color: #6A5FFD;
-            border: 2px solid #6A5FFD;
-        }
-
-        .outline:hover {
-            background: #f6f3ff;
-        }
-
-        .progress {
-            text-align: center;
-            margin-top: 10px;
-            color: #6A5FFD;
-            font-weight: 700;
-        }
-    </style>
+    .meta{
+      margin-top:18px;
+      font-size:12px;
+      color:#9ca3af;
+      text-align:right;
+    }
+  </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="top">
+    <div class="top-left">
+      <h1>AI Interview Practice</h1>
+      <p>
+        {{ data.name }} &nbsp; • &nbsp;
+        <span class="badge">{{ difficulty|title }} Level</span>
+      </p>
+      <p style="margin-top:6px;">Question {{ index }} of {{ total }}</p>
+    </div>
+    <div class="score-box">
+      <div>Current Score</div>
+      <span>{{ score }} / {{ total }}</span>
+    </div>
+  </div>
 
-<div class="container">
-    <h1>AI Interview Session</h1>
-    <div class="subtitle">Answer each question clearly. You can speak or type your answer.</div>
-
-    <div class="question-box">
-        {{ question }}
+  <div class="question-card">
+    <div class="q-label">Question</div>
+    <div class="q-text" id="question-text">{{ question }}</div>
+    <div class="controls">
+      <button type="button" class="btn-small" onclick="speakQuestion()">
+        🔊 Listen to Question
+      </button>
+      <button type="button" class="btn-small" onclick="startListening()">
+        🎙 Speak Answer
+      </button>
     </div>
 
-    <div class="progress">
-        Question {{ question_number }} of {{ total_questions }}
-    </div>
+    <form method="post" id="interview-form">
+      {% csrf_token %}
+      <textarea id="answer-input" name="answer" placeholder="Type or speak your answer here..."></textarea>
 
-    <form action="{% url 'submit_answer' %}" method="POST">
-        {% csrf_token %}
-        <textarea id="answerBox" name="answer" placeholder="Speak or type your answer..."></textarea>
-
-        <div class="controls">
-            <button type="button" class="btn outline" onclick="speakQuestion()">🔊 Hear Question</button>
-            <button type="button" class="btn outline" onclick="startListening()">🎤 Speak Answer</button>
-            <button type="submit" class="btn primary">Next Question →</button>
-        </div>
+      <div class="actions">
+        <button type="submit" name="action" value="submit" class="btn-main">
+          Submit Answer
+        </button>
+        <button type="submit" name="action" value="next" class="btn-outline">
+          Next Question →
+        </button>
+      </div>
     </form>
+
+    {% if feedback %}
+  <div class="feedback {% if feedback.is_correct %}correct{% else %}wrong{% endif %}">
+    <div class="label">
+      {% if feedback.is_correct %}
+        ✅ Correct!
+      {% else %}
+        ❌ Not correct.
+      {% endif %}
+    </div>
+    {% if feedback.user_answer %}
+      <div><strong>Your answer:</strong> {{ feedback.user_answer }}</div>
+    {% endif %}
+    <div style="margin-top:4px;">
+      <strong>Ideal answer:</strong> {{ feedback.ideal_answer }}
+    </div>
+    <div style="margin-top:6px;">
+      <strong>AI Feedback:</strong> {{ feedback.feedback_text }}
+    </div>
+    <div style="margin-top:6px; font-size:12px;">
+      English score: {{ feedback.english_score }}/10 &nbsp; • &nbsp;
+      Communication score: {{ feedback.communication_score }}/10
+    </div>
+  </div>
+{% endif %}
+
+  </div>
+
+  <div class="meta">
+    Tip: First click “Listen to Question”, then “Speak Answer” or type manually.  
+    Voice features work best in Chrome-based browsers.
+  </div>
 </div>
 
 <script>
-    function speakQuestion() {
-        const utterance = new SpeechSynthesisUtterance(`{{ question }}`);
-        utterance.rate = 1;
-        speechSynthesis.speak(utterance);
+  // Text-to-speech: read the question aloud
+  function speakQuestion() {
+    if (!('speechSynthesis' in window)) {
+      alert("Your browser does not support speech synthesis.");
+      return;
     }
+    var text = document.getElementById("question-text").innerText || "";
+    if (!text) return;
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.lang = "en-US";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  }
 
-    function startListening() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recog = new SpeechRecognition();
-        recog.lang = "en-US";
-        recog.start();
-
-        recog.onresult = function (e) {
-            document.getElementById("answerBox").value += e.results[0][0].transcript + " ";
-        };
+  // Speech recognition: convert voice to text in the textarea
+  function startListening() {
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Your browser does not support speech recognition (try Chrome).");
+      return;
     }
+    var recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = function(event) {
+      var transcript = event.results[0][0].transcript;
+      var textarea = document.getElementById("answer-input");
+      if (textarea.value) {
+        textarea.value += " " + transcript;
+      } else {
+        textarea.value = transcript;
+      }
+    };
+
+    recognition.onerror = function(event) {
+      console.log("Speech recognition error:", event.error);
+    };
+
+    recognition.start();
+  }
 </script>
-
 </body>
 </html>
