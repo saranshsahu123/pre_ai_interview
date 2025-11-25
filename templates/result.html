@@ -1,308 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Resume Analysis Result</title>
-  <style>
-    :root{
-      --bg:#f4f6fb;
-      --card:#ffffff;
-      --accent:#6b5bff;
-      --muted:#666;
-      --success:#28a745;
-    }
-    body{
-      margin:0;
-      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
-      color:#222;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      padding:28px;
-    }
-    .wrap{
-      max-width:1000px;
-      margin:20px auto;
-    }
-    .header{
-      display:flex;
-      gap:18px;
-      align-items:center;
-      margin-bottom:18px;
-    }
-    .profile {
-      width:110px;
-      height:110px;
-      border-radius:12px;
-      overflow:hidden;
-      background:#f0f0f0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      box-shadow:0 8px 30px rgba(45,50,80,0.08);
-      flex-shrink:0;
-    }
-    .profile img{ width:100%; height:100%; object-fit:cover; }
-    .hdr-meta{
-      flex:1;
-    }
-    .name{ font-size:22px; font-weight:700; color:#111; }
-    .role{ margin-top:4px; color:var(--muted); font-weight:600; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Analysis Result</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<style>
+    /* ---------- GLOBAL ---------- */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:"Segoe UI",sans-serif; }
+    body {
+        background:linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),
+        url('https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070') center/cover fixed;
+        min-height:100vh; padding:15px; color:#fff;
+    }
+
+    a { text-decoration:none; color:inherit; }
+
+    /* ---------- WRAPPER ---------- */
+    .wrap {
+        max-width:1100px; margin:auto;
+        background:rgba(18,18,30,0.85);
+        backdrop-filter:blur(15px);
+        border-radius:20px; padding:22px;
+        border:1px solid rgba(255,215,0,0.2);
+    }
+
+    /* ---------- HEADER ---------- */
+    .header{display:flex;gap:18px;align-items:center;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.1);}
+    .profile{
+        width:90px;height:90px;border-radius:12px;overflow:hidden;
+        border:2px solid rgba(106,95,253,0.5);background:rgba(106,95,253,0.2);
+        display:flex;align-items:center;justify-content:center;
+    }
+    .profile img{width:100%;height:100%;object-fit:cover;}
+    .name{font-size:22px;font-weight:700;background:linear-gradient(135deg,#6A5FFD,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .role{color:#b8b8d0;font-size:15px;margin-bottom:8px;}
+    .contact{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#b8b8d0;}
+    .contact i{color:#6A5FFD;}
+
+    .score-box{text-align:right;background:rgba(30,30,46,0.7);padding:10px;border-radius:10px;border-left:4px solid #6A5FFD;}
+    .score-label{font-size:12px;color:#b8b8d0;}
+    .score-value{font-size:24px;font-weight:700;background:linear-gradient(135deg,#6A5FFD,#8F79FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+    /* ---------- GRID ---------- */
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:16px;margin-top:18px;}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr;} }
+
+    /* ---------- CARDS ---------- */
     .card{
-      background:var(--card);
-      border-radius:14px;
-      padding:20px;
-      box-shadow:0 8px 30px rgba(34,41,80,0.06);
-      margin-bottom:18px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 340px;
-      gap:18px;
+        background:rgba(30,30,46,0.7);
+        padding:18px;border-radius:12px;
+        border-left:4px solid #6A5FFD;
     }
 
     .section-title{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:700;
-      color:#333;
-      margin-bottom:12px;
+        display:flex;align-items:center;gap:8px;
+        font-size:16px;font-weight:700;margin-bottom:12px;
     }
+    .section-title i{color:#6A5FFD;}
 
-    .basic-list p{ margin:6px 0; color:var(--muted); }
-    .skills-list, .projects-list, .companies-list{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
+    /* ---------- SKILLS & PROJECTS ---------- */
+    .skills-list,.projects-list{display:flex;flex-wrap:wrap;gap:8px;}
     .chip{
-      background:#f5f7ff;
-      color:#253bff;
-      padding:8px 10px;
-      border-radius:999px;
-      font-weight:600;
-      font-size:13px;
-      box-shadow:0 2px 8px rgba(99,102,241,0.06);
+        padding:7px 12px;background:rgba(106,95,253,0.25);
+        border-radius:20px;border:1px solid rgba(106,95,253,0.4);
+        font-size:13px;font-weight:600;transition:0.2s;
+    }
+    .chip:hover{background:rgba(106,95,253,0.35);}
+
+    .projects-list ul{width:100%;padding-left:0;}
+    .projects-list li{
+        list-style:none;padding:10px;border-radius:8px;
+        background:rgba(25,25,40,0.8);margin-bottom:8px;
+        border-left:3px solid #6A5FFD;font-size:14px;
     }
 
-    .right-col {
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+    /* ---------- COMPANIES ---------- */
+    .companies-list{display:flex;flex-direction:column;gap:10px;}
+    .company{
+        background:rgba(25,25,40,0.8);padding:12px;border-radius:10px;
+        border:1px solid rgba(106,95,253,0.3);
+        display:flex;justify-content:space-between;gap:10px;
+        transition:0.2s;
+    }
+    .company:hover{border-color:#6A5FFD;}
+    .company-name{font-weight:700;font-size:14px;}
+    .company-skills{font-size:12px;color:#b8b8d0;}
+    .company-score{
+        font-size:18px;font-weight:700;
+        background:linear-gradient(135deg,#6A5FFD,#8F79FF);
+        -webkit-background-clip:text;-webkit-text-fill-color:transparent;
     }
 
-    .score {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-    }
+    /* ---------- RIGHT COLUMN CARDS ---------- */
     .score-circle{
-      width:86px;
-      height:86px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(135deg,var(--accent),#9c84ff);
-      color:#fff;
-      font-weight:800;
-      font-size:22px;
-      box-shadow:0 12px 36px rgba(107,91,255,0.2);
+        width:70px;height:70px;border-radius:50%;
+        background:linear-gradient(135deg,#6A5FFD,#8F79FF);
+        display:flex;align-items:center;justify-content:center;
+        color:#fff;font-weight:800;font-size:22px;
+        border:3px solid rgba(255,215,0,0.5);
     }
 
-    .score-meta{ flex:1; padding-left:6px; }
-    .score-meta p{ margin:4px 0; color:var(--muted); }
-
-    .btns{ display:flex; gap:12px; margin-top:10px; justify-content:center; }
+    .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
     .btn{
-      background:var(--accent);
-      color:#fff;
-      border:none;
-      padding:12px 18px;
-      border-radius:10px;
-      cursor:pointer;
-      text-decoration:none;
-      font-weight:700;
-      box-shadow:0 10px 30px rgba(107,91,255,0.12);
+        flex:1;padding:10px;border-radius:10px;text-align:center;
+        background:linear-gradient(135deg,#6A5FFD,#8F79FF);
+        font-size:14px;font-weight:700;
+        box-shadow:0 4px 15px rgba(106,95,253,0.4);
+        cursor:pointer;transition:0.2s;
     }
-    .btn.secondary{
-      background:#fff;
-      color:var(--accent);
-      border:2px solid #eef0ff;
-      box-shadow:0 6px 20px rgba(16,24,40,0.04);
+    .btn:hover{transform:translateY(-2px);}
+    .btn-secondary{
+        background:transparent;border:2px solid #6A5FFD;color:#6A5FFD;
     }
+    .btn-secondary:hover{background:rgba(106,95,253,0.1);}
 
-    .companies-list .company{
-      width:100%;
-      background:#fbfdff;
-      border-radius:10px;
-      padding:10px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      border:1px solid #f0f4ff;
-    }
-    .hint{ color:var(--muted); font-size:13px; }
-
-    footer{ text-align:center; margin-top:22px; color:var(--muted); font-size:13px; }
-
-    /* responsive */
-    @media (max-width:900px){
-      .grid{ grid-template-columns: 1fr; }
-      .right-col{ order:2; }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="wrap">
 
+<div class="wrap">
+
+    <!-- HEADER -->
     <div class="header">
-      <div class="profile">
-        {% if data.profile_img %}
-          <img src="{{ data.profile_img }}" alt="profile" />
-        {% else %}
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" style="opacity:.55">
-            <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM4 20v-1c0-2.76 5.33-4 8-4s8 1.24 8 4v1H4z" fill="#bfc8ff"/>
-          </svg>
-        {% endif %}
-      </div>
-
-      <div class="hdr-meta">
-        <div class="name">{{ data.name }}</div>
-        <div class="role">{{ data.job_role|title }}</div>
-        <div style="margin-top:8px;" class="hint">
-          <strong>Email:</strong> {{ data.email }} &nbsp; • &nbsp; <strong>Phone:</strong> {{ data.phone }}
-        </div>
-      </div>
-
-      <div style="margin-left:auto; text-align:right;">
-        <div style="font-size:12px; color:var(--muted)">Resume Score</div>
-        <div style="margin-top:8px;">
-          <div style="display:inline-block; padding:10px 14px; background:#fff; border-radius:12px; box-shadow:0 10px 26px rgba(16,24,40,0.04); font-weight:800; font-size:20px; color:var(--accent)">
-            {{ data.rank_score }} / 10
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid">
-      <!-- LEFT COLUMN -->
-      <div>
-        <div class="card">
-          <div class="section-title">Skills</div>
-          <div class="skills-list">
-            {% if data.skills %}
-              {% for s in data.skills %}
-                <div class="chip">{{ s|upper }}</div>
-              {% endfor %}
+        <div class="profile">
+            {% if data.profile_img %}
+                <img src="{{ data.profile_img }}" alt="">
             {% else %}
-              <div class="hint">No skills detected from the resume.</div>
+                <i class="fas fa-user" style="font-size:35px;color:#6A5FFD;"></i>
             {% endif %}
-          </div>
         </div>
 
-        <div class="card" style="margin-top:14px;">
-          <div class="section-title">Project Titles</div>
-          <div class="projects-list">
-            {% if data.project_titles %}
-              <ul style="padding-left:18px; color:var(--muted)">
-                {% for p in data.project_titles %}
-                  <li style="margin-bottom:8px;">{{ p }}</li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <div class="hint">No project titles found. Make sure your resume has a 'Project' section.</div>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:14px;">
-          <div class="section-title">Suggested Companies</div>
-          <div class="companies-list" style="display:flex;flex-direction:column;gap:10px;">
-            {% if data.companies %}
-              {% for c in data.companies %}
-                <div class="company">
-                  <div>
-                    <div style="font-weight:700">{{ c.company }}</div>
-                    <div class="hint" style="font-size:13px;">Matched skills: {{ c.matched_skills|join:", " }}</div>
-                  </div>
-                  <div style="font-weight:800;color:var(--accent)">{{ c.match_score }}</div>
-                </div>
-              {% endfor %}
-            {% else %}
-              <div class="hint">No company suggestions available for the detected skills.</div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT COLUMN -->
-      <div class="right-col">
-        <div class="card score">
-          <div class="score-circle">{{ data.rank_score|floatformat:0 }}</div>
-          <div class="score-meta">
-            <div style="font-weight:800; font-size:16px;">Overall Resume Score</div>
-            <p class="hint">This score is calculated from degree, skills match, projects and experience.</p>
-            <div style="margin-top:8px;">
-              <span style="display:inline-block; background:#f6fff5; color:var(--success); padding:8px 12px; border-radius:8px; font-weight:700;">
-                {% if data.has_project %} Project ✓ {% else %} No Project {% endif %}
-              </span>
+        <div style="flex:1;">
+            <div class="name">{{ data.name }}</div>
+            <div class="role">{{ data.job_role|title }}</div>
+            <div class="contact">
+                <span><i class="fa fa-envelope"></i> {{ data.email }}</span>
+                <span><i class="fa fa-phone"></i> {{ data.phone }}</span>
             </div>
-          </div>
         </div>
 
-        <div class="card">
-          <div class="section-title">Quick Actions</div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-start;">
-            <!-- Start Interview: uses session resume_data so simple link is fine -->
-            <a href="{% url 'start_interview' %}" class="btn" title="Start AI Interview Practice">
-  Start AI Interview
-</a>
-
-
-            <!-- Upload New Resume -->
-            <a href="{% url 'upload_resume' %}" class="btn secondary" title="Upload a new resume">Upload New Resume</a>
-
-            <!-- Print result -->
-            <button onclick="window.print()" class="btn secondary" style="border-radius:10px;">Print Result</button>
-          </div>
+        <div class="score-box">
+            <div class="score-label">Resume Score</div>
+            <div class="score-value">{{ data.rank_score }}/10</div>
         </div>
-
-        <div class="card">
-          <div class="section-title">Contact & Education</div>
-          <div class="basic-list">
-            <p><strong>Email:</strong> {{ data.email }}</p>
-            <p><strong>Phone:</strong> {{ data.phone }}</p>
-            <p><strong>Degree:</strong> {{ data.degree|default:"Not found" }}</p>
-            <p><strong>Experience section found:</strong> {{ data.has_experience|yesno:"Yes,No" }}</p>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Share / Social</div>
-          <div class="hint">Quick links (if any were detected in resume will be shown)</div>
-          <div style="margin-top:10px;">
-            {% if data.social_links %}
-              {% for platform, link in data.social_links.items %}
-                <a href="{{ link }}" target="_blank" class="chip" style="background:#fff;color:#333;border:1px solid #f0f2ff;">{{ platform }}</a>
-              {% endfor %}
-            {% else %}
-              <div class="hint">No social links parsed from resume.</div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
     </div>
 
-    <footer>
-      <p>Need better recommendations? Improve your projects and skill keywords in the resume and re-upload.</p>
-    </footer>
-  </div>
+    <!-- GRID -->
+    <div class="grid">
+
+        <!-- RIGHT COLUMN -->
+        <div>
+            <div class="card" style="display:flex;gap:12px;align-items:center;">
+                <div class="score-circle">{{ data.rank_score|floatformat:0 }}</div>
+                <div style="font-size:14px;color:#b8b8d0;">
+                    Overall Resume Strength<br>
+                    <span style="font-size:13px;">Score based on degree, skills & projects</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title"><i class="fas fa-bolt"></i> Quick Actions</div>
+                <div class="btns">
+                    <a class="btn" href="{% url 'start_interview' %}"><i class="fa fa-robot"></i> Start Interview</a>
+                    <a class="btn btn-secondary" href="{% url 'upload_resume' %}"><i class="fa fa-upload"></i> Upload Again</a>
+                    <button onclick="window.print()" class="btn btn-secondary"><i class="fa fa-print"></i> Print</button>
+                </div>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="card">
+                <div class="section-title"><i class="fas fa-user-graduate"></i> Details</div>
+                <p><b>Email:</b> {{ data.email }}</p>
+                <p><b>Phone:</b> {{ data.phone }}</p>
+                <p><b>Degree:</b> {{ data.degree }}</p>
+            </div>
+
+            <!-- SOCIAL LINKS -->
+            <div class="card">
+                <div class="section-title"><i class="fas fa-share-alt"></i> Social Links</div>
+                {% if data.social_links %}
+                    {% for key, val in data.social_links.items %}
+                        <a href="{{ val }}" target="_blank" class="chip">
+                            {% if key == "LinkedIn" %}
+                                <i class="fab fa-linkedin"></i>
+                            {% elif key == "GitHub" %}
+                                <i class="fab fa-github"></i>
+                            {% else %}
+                                <i class="fas fa-link"></i>
+                            {% endif %}
+                            {{ key }}
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div style="color:#b8b8d0;font-size:13px;">No links found</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <div class="card">
+                <div class="section-title"><i class="fas fa-code"></i> Skills</div>
+                <div class="skills-list">
+                    {% for s in data.skills %}
+                        <div class="chip">{{ s }}</div>
+                    {% empty %}
+                        <span style="color:#b8b8d0;font-size:13px;">No skills detected</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title"><i class="fas fa-project-diagram"></i> Project Titles</div>
+                <div class="projects-list">
+                    {% if data.project_titles %}
+                        <ul>
+                            {% for p in data.project_titles %}
+                                <li>{{ p }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <span style="color:#b8b8d0;font-size:13px;">No projects found</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title"><i class="fas fa-building"></i> Suggested Companies</div>
+                <div class="companies-list">
+                    {% for c in data.companies %}
+                        <div class="company">
+                            <div>
+                                <div class="company-name">{{ c.company }}</div>
+                                <div class="company-skills">{{ c.matched_skills|join:", " }}</div>
+                            </div>
+                            <div class="company-score">{{ c.match_score }}</div>
+                        </div>
+                    {% empty %}
+                        <span style="color:#b8b8d0;font-size:13px;">No suggestions available</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

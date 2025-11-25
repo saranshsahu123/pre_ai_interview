@@ -1,135 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Interview Feedback</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
-      padding:24px;
-    }
-    .wrap{
-      max-width:800px;
-      margin:40px auto;
-      background:#fff;
-      border-radius:18px;
-      box-shadow:0 14px 45px rgba(15,23,42,0.18);
-      padding:26px 26px 30px;
-      text-align:center;
-    }
-    h1{
-      margin:0 0 6px;
-      font-size:22px;
-      font-weight:800;
-      color:#111827;
-    }
-    p.sub{
-      margin:0 0 14px;
-      font-size:13px;
-      color:#6b7280;
-    }
-    .score-circle{
-      width:120px;
-      height:120px;
-      border-radius:50%;
-      margin:20px auto 10px;
-      background:conic-gradient(#4ade80 calc(var(--percent)*1%),#e5e7eb 0);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-    }
-    .score-circle-inner{
-      width:88px;
-      height:88px;
-      border-radius:50%;
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      box-shadow:0 6px 18px rgba(15,23,42,0.08);
-    }
-    .score-main{
-      font-size:28px;
-      font-weight:800;
-      color:#111827;
-    }
-    .score-sub{
-      font-size:11px;
-      color:#6b7280;
-    }
-    .readiness{
-      margin-top:14px;
-      font-size:14px;
-      font-weight:600;
-      color:#111827;
-    }
-    .meta{
-      margin-top:8px;
-      font-size:13px;
-      color:#6b7280;
-    }
-    .btns{
-      margin-top:20px;
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      padding:10px 16px;
-      border-radius:999px;
-      border:none;
-      cursor:pointer;
-      font-size:13px;
-      font-weight:700;
-      text-decoration:none;
-      display:inline-block;
-    }
-    .btn.primary{
-      background:#4f46e5;
-      color:#fff;
-      box-shadow:0 10px 30px rgba(79,70,229,0.3);
-    }
-    .btn.secondary{
-      background:#fff;
-      color:#4b5563;
-      border:1px solid #e5e7eb;
-    }
-  </style>
+    <title>Interview Feedback</title>
+    <style>
+        body{
+            font-family: Arial;
+            background:#eef2f7;
+            margin:0;
+        }
+        .card{
+            width:450px;
+            margin:80px auto;
+            background:#fff;
+            padding:25px;
+            border-radius:10px;
+            text-align:center;
+            box-shadow:0 0 10px #ccc;
+        }
+        h2{ margin-bottom:10px; }
+        p{ font-size:16px; }
+        .status{
+            padding:10px;
+            background:#0066ff;
+            color:white;
+            border-radius:5px;
+            margin-top:20px;
+        }
+    </style>
 </head>
+
 <body>
-<div class="wrap" style="--percent: {{ evaluation.score|floatformat:0 }};">
-  <h1>Interview Practice Summary</h1>
-  <p class="sub">
-    {{ data.name }} &nbsp; • &nbsp; Difficulty: {{ difficulty|title }}
-  </p>
 
-  <div class="score-circle">
-    <div class="score-circle-inner">
-      <div class="score-main">{{ evaluation.score }}</div>
-      <div class="score-sub">out of {{ evaluation.out_of }}</div>
-    </div>
-  </div>
-  <div class="meta">
-  Average English score: {{ evaluation.avg_english }}/10 &nbsp; • &nbsp;
-  Average communication score: {{ evaluation.avg_communication }}/10
+<div class="card">
+    <h2>Interview Summary</h2>
+
+    <p><b>Total Score:</b> {{ score }}</p>
+    <p><b>Average English Score:</b> {{ english }}</p>
+    <p><b>Communication Score:</b> {{ communication }}</p>
+
+    <div class="status">{{ readiness }}</div>
 </div>
 
-
-  <div class="readiness">{{ evaluation.readiness }}</div>
-  <div class="meta">
-    Keep practicing regularly and try changing the difficulty level or your answers style.
-  </div>
-
-  <div class="btns">
-    <a class="btn primary" href="{% url 'start_interview' %}">Try Another Round</a>
-    <a class="btn secondary" href="{% url 'upload_resume' %}">Back to Resume Analysis</a>
-  </div>
-</div>
 </body>
 </html>

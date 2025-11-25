@@ -1,58 +1,440 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Upload Resume</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body{
-      margin:0;
-      font-family:Inter,system-ui;
-      background:linear-gradient(180deg,#eef2ff 0%,#f4f6fb 100%);
-      padding:24px;
-    }
-    .wrap{
-      max-width:600px;
-      margin:50px auto;
-      background:#fff;
-      padding:24px 24px 26px;
-      border-radius:18px;
-      box-shadow:0 14px 45px rgba(15,23,42,0.18);
-    }
-    h1{
-      margin:0 0 6px;
-      font-size:22px;
-      font-weight:800;
-    }
-    p{
-      margin:0 0 16px;
-      color:#6b7280;
-      font-size:13px;
-    }
-    input[type=file]{
-      margin:10px 0 16px;
-    }
-    button{
-      padding:10px 16px;
-      border-radius:999px;
-      border:none;
-      background:#4f46e5;
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-    }
-  </style>
+    <title>Upload Resume</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Particles Container */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .upload-container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(18, 18, 30, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 40px 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-wrapper {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .ai-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6A5FFD, #8F79FF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 20px rgba(106, 95, 253, 0.5);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .ai-avatar i {
+            font-size: 35px;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #6A5FFD, #8F79FF, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #b8b8d0;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 15px;
+            border: 2px dashed rgba(106, 95, 253, 0.5);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(25, 25, 40, 0.8);
+            color: #fff;
+        }
+
+        input[type="file"]:hover {
+            border-color: #6A5FFD;
+            background: rgba(30, 30, 46, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(106, 95, 253, 0.3);
+        }
+
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #6A5FFD;
+            box-shadow: 0 0 0 3px rgba(106, 95, 253, 0.2);
+        }
+
+        button {
+            padding: 16px;
+            background: linear-gradient(135deg, #6A5FFD, #8F79FF);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(106, 95, 253, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(106, 95, 253, 0.6);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .note {
+            font-size: 14px;
+            color: #b8b8d0;
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .format-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(106, 95, 253, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(106, 95, 253, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(106, 95, 253, 0.5);
+            transform: scale(1.05);
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .error {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* File info display */
+        .file-info {
+            background: rgba(106, 95, 253, 0.1);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border-left: 4px solid #6A5FFD;
+            display: none;
+        }
+
+        .file-info.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .upload-container {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            .ai-avatar {
+                width: 70px;
+                height: 70px;
+            }
+
+            .ai-avatar i {
+                font-size: 30px;
+            }
+
+            input[type="file"] {
+                padding: 14px 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Upload Your Resume</h1>
-  <p>Supported formats: PDF, DOCX. We will analyze your profile and generate an interview practice set.</p>
+    <!-- Particles Container -->
+    <div id="particles-js"></div>
 
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Analyze Resume</button>
-  </form>
-</div>
+    <div class="upload-container">
+        <div class="icon-wrapper">
+            <div class="ai-avatar">
+                <i class="fas fa-file-upload"></i>
+            </div>
+        </div>
+        
+        <h2>Upload Your Resume</h2>
+        <div class="subtitle">Upload your resume to get personalized interview questions</div>
+
+        <!-- Demo messages - remove in production -->
+        <!-- <div class="message success">Resume uploaded successfully!</div> -->
+        <!-- <div class="message error">Please upload a valid PDF or DOCX file</div> -->
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="file-input-wrapper">
+                <input type="file" name="resume" accept=".pdf,.docx,.doc" required 
+                       onchange="showFileInfo(this)">
+            </div>
+
+            <div class="file-info" id="fileInfo">
+                <i class="fas fa-file"></i>
+                <span id="fileName">No file selected</span>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Upload Resume</span>
+            </button>
+        </form>
+
+        <p class="note">
+            <i class="fas fa-info-circle"></i>
+            Accepted formats
+        </p>
+        <div class="format-badges">
+            <span class="badge">PDF</span>
+            <span class="badge">DOCX</span>
+            <span class="badge">DOC</span>
+        </div>
+    </div>
+
+    <!-- Particles.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: ["#6A5FFD", "#8F79FF", "#FFD700"]
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6A5FFD",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.3
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        // File info display function
+        function showFileInfo(input) {
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                fileName.textContent = file.name;
+                fileInfo.classList.add('show');
+            } else {
+                fileInfo.classList.remove('show');
+            }
+        }
+    </script>
 </body>
 </html>
